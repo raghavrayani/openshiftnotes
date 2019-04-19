@@ -1,0 +1,8 @@
+--> Creating router router ...
+info: password for stats user admin has been set to p3ZPzxWc73
+    warning: serviceaccounts "router" already exists
+    secret "router-certs" created
+    clusterrolebinding.authorization.openshift.io "router-router-role" created
+    deploymentconfig.apps.openshift.io "router" created
+    service "router" created
+--> Success

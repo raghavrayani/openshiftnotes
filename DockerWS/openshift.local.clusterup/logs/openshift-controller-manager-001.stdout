@@ -1,0 +1,57 @@
++ ls -alh /
+openshift-controller-manager
+total 48K
+drwxr-xr-x.   1 root root  186 Apr 19 05:06 .
+drwxr-xr-x.   1 root root  186 Apr 19 05:06 ..
+-rwxr-xr-x.   1 root root    0 Apr 19 05:06 .dockerenv
+-rw-r--r--.   1 root root  12K Mar  5 17:36 anaconda-post.log
+lrwxrwxrwx.   1 root root    7 Mar  5 17:34 bin -> usr/bin
+drwxr-xr-x.  14 root root 2.6K Apr 19 05:06 dev
+drwxr-xr-x.   1 root root   66 Apr 19 05:06 etc
+drwxr-xr-x.   2 root root    6 Apr 11  2018 home
+-rwxr-xr-x.   1 root root  857 Jan  1  1970 install.sh
+-rw-r--r--.   1 root root 2.3K Jan  1  1970 install.yaml
+-rw-r--r--.   1 root root 5.6K Jan  1  1970 kubeconfig.kubeconfig
+lrwxrwxrwx.   1 root root    7 Mar  5 17:34 lib -> usr/lib
+lrwxrwxrwx.   1 root root    9 Mar  5 17:34 lib64 -> usr/lib64
+drwxr-xr-x.   2 root root    6 Apr 11  2018 media
+drwxr-xr-x.   2 root root    6 Apr 11  2018 mnt
+-rw-r--r--.   1 root root   28 Jan  1  1970 namespace-file
+-rw-r--r--.   1 root root  137 Jan  1  1970 namespace.yaml
+drwxr-xr-x.   2 root root    6 Apr 11  2018 opt
+-rw-r--r--.   1 root root  587 Jan  1  1970 param-file.txt
+-rw-r--r--.   1 root root   80 Jan  1  1970 privileged-sa-list.txt
+dr-xr-xr-x. 298 root root    0 Apr 19 04:06 proc
+-rw-r--r--.   1 root root 2.7K Jan  1  1970 rbac.yaml
+dr-xr-x---.   1 root root   18 Apr 16 17:11 root
+drwxr-xr-x.   1 root root    6 Apr 16 17:43 run
+lrwxrwxrwx.   1 root root    8 Mar  5 17:34 sbin -> usr/sbin
+drwxr-xr-x.   2 root root    6 Apr 11  2018 srv
+dr-xr-xr-x.  13 root root    0 Apr 19 04:06 sys
+drwxrwxrwt.   1 root root    6 Apr 16 17:43 tmp
+drwxr-xr-x.   1 root root   30 Mar  5 17:34 usr
+drwxr-xr-x.   1 root root   41 Mar  5 17:34 var
++ read p
++ oc adm policy add-scc-to-user --config=/kubeconfig.kubeconfig privileged system:serviceaccount:openshift-controller-manager:openshift-controller-manager
+scc "privileged" added to: ["system:serviceaccount:openshift-controller-manager:openshift-controller-manager"]
++ read p
++ ns=
++ '[' -s /namespace-file ']'
+++ cat /namespace-file
++ ns='--namespace=openshift-controller-manager '
++ '[' -s /namespace.yaml ']'
++ oc apply --config=/kubeconfig.kubeconfig -f /namespace.yaml
+namespace/openshift-controller-manager created
++ '[' -s /rbac.yaml ']'
++ oc process --local -o yaml --ignore-unknown-parameters --param-file=/param-file.txt -f /rbac.yaml
++ oc auth reconcile --config=/kubeconfig.kubeconfig -f -
+clusterrole.rbac.authorization.k8s.io/system:openshift:openshift-controller-manager reconciled
+clusterrolebinding.rbac.authorization.k8s.io/system:openshift:openshift-controller-manager reconciled
+role.rbac.authorization.k8s.io/system:openshift:leader-locking-openshift-controller-manager reconciled
+rolebinding.rbac.authorization.k8s.io/system:openshift:leader-locking-openshift-controller-manager reconciled
+role.rbac.authorization.k8s.io/system:openshift:sa-creating-openshift-controller-manager reconciled
+rolebinding.rbac.authorization.k8s.io/system:openshift:sa-creating-openshift-controller-manager reconciled
++ oc process --local -o yaml --ignore-unknown-parameters --param-file=/param-file.txt -f /install.yaml
++ oc apply --namespace=openshift-controller-manager --config=/kubeconfig.kubeconfig -f -
+daemonset.apps/openshift-controller-manager created
+serviceaccount/openshift-controller-manager created
